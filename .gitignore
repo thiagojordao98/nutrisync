@@ -1,0 +1,36 @@
+# Arquivos de bytecode Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Arquivos de banco de dados SQLite (se estiver usando)
+*.sqlite3
+*.sqlite3-journal
+
+# Arquivos de log
+*.log
+
+# Arquivos temporários
+*.tmp
+
+# Arquivos de ambiente virtual
+venv/
+ENV/
+
+# Arquivos de IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*.bak
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
+
+# Pasta de arquivos estáticos coletados
+staticfiles/
+
+# Pasta de mídia (se estiver usando)
+media/
