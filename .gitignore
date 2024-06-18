@@ -122,7 +122,7 @@ __localcode
 venv
 env
 .DS_Store
-settings.py
+# settings.py
 _local_settings.py
 gunicorn-error-log
 db.sqlite3
