@@ -4,25 +4,21 @@
       {
         "src": "nutrisync/wsgi.py",
         "use": "@vercel/python",
-        "config": { "maxLambdaSize": "15mb", "runtime": "python3.10" }
+        "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
       },
       {
         "src": "build_files.sh",
-        "use": "@vercel/static-build",
-        "config": {
-          "distDir": "templates/static"
-        }
+        "use": "@vercel/static-build"
       }
     ],
     "routes": [
       {
-        "src": "/static/(.*)",
-        "dest": "/static/$1"
+        "src": "/staticfiles/(.*)",
+        "dest": "/staticfiles/$1"
       },
       {
         "src": "/(.*)",
         "dest": "nutrisync/wsgi.py"
       }
-    ],
-    "outputDirectory": "templates/static"
+    ]
   }
