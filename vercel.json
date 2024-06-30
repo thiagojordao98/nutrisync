@@ -10,7 +10,7 @@
         "src": "build_files.sh",
         "use": "@vercel/static-build",
         "config": {
-          "distDir": "templates/staticfiles"
+          "distDir": "templates/static"
         }
       }
     ],
@@ -24,5 +24,5 @@
         "dest": "nutrisync/wsgi.py"
       }
     ],
-    "outputDirectory": "templates/staticfiles"
+    "outputDirectory": "templates/static"
   }
