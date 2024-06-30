@@ -28,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1', 'localhost', ]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -119,8 +118,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'templates/static'),)
-STATIC_ROOT = os.path.join('static')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'templates', 'static'),)
+STATIC_ROOT = os.path.join('staticfiles')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
