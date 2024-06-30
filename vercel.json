@@ -20,5 +20,6 @@
         "src": "/(.*)",
         "dest": "nutrisync/wsgi.py"
       }
-    ]
+    ],
+    "outputDirectory": "templates/staticfiles"
   }
