@@ -6,19 +6,21 @@
 
 
 .logo_sidebar{
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50%;
 }
 
 .img_logo_sidebar{
     width: 100%;
- 
 
 }
 
 .sidebar{
 
     background-image: url("/static/autenticacao/img/fundo_background2.png");
-    background-position: center 220px;
+    background-position: center 350px;
     background-repeat: no-repeat;
     {% comment %} background-size: cover; {% endcomment %}
 
