@@ -8,20 +8,18 @@
       },
       {
         "src": "build_files.sh",
-        "use": "@vercel/static-build",
-        "config": {
-          "distDir": "static"
-        }
+        "use": "@vercel/static-build"
       }
     ],
     "routes": [
       {
-        "src": "/templates/static/(.*)",
-        "dest": "/templates/static/$1"
+        "src": "/staticfiles/(.*)",
+        "dest": "/staticfiles/$1"
       },
       {
         "src": "/(.*)",
         "dest": "nutrisync/wsgi.py"
       }
-    ]
+    ],
+    "outputDirectory": "templates/staticfiles"
   }
