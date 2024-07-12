@@ -23,8 +23,8 @@ NutriSync é uma plataforma inovadora projetada exclusivamente para nutricionist
 
 ## Requisitos
 
-- Python 3.6+
-- Django 3.0+
+- Python 3.8+
+- Django 4.0+
 - Virtualenv (opcional, mas recomendado)
 
 ## Instalação
@@ -79,4 +79,4 @@ Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICE
 
 ## Contato
 
-Para mais informações, entre em contato em [email@dominio.com](mailto:thiagojordao.dev@gmail.com).
+Para mais informações, entre em contato em [thiagojordao.dev@gmail.com](mailto:thiagojordao.dev@gmail.com).
