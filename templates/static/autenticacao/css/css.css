@@ -1,28 +1,32 @@
 .sidebar{
-    background-color: #28A745;
+    background-color: #008c50;
     
     height: 100vh;
 }
 
 
 .logo_sidebar{
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
 }
 
 .img_logo_sidebar{
     width: 100%;
- 
 
 }
 
+/*
 .sidebar{
 
     background-image: url("/static/autenticacao/img/fundo_background2.png");
-    background-position: center 220px;
+    background-position: center 320px;
     background-repeat: no-repeat;
     {% comment %} background-size: cover; {% endcomment %}
 
 }
+*/
 
 .area_cadastrar{
     margin-top: 8%;
@@ -50,7 +54,7 @@
 
 .input-form:focus{
 
-    border: 2px solid #28A745 !important;
+    border: 2px solid #008c50 !important;
     outline: 0 !important;
     box-shadow: none !important;
 
@@ -65,7 +69,7 @@
     border: none;
     padding: 5px 15px 5px 15px;
     font-size: 25px;
-    background-color: #28A745;
+    background-color: #008c50;
     color: white;
     font-weight: bold;
 
