@@ -1,15 +1,44 @@
-# NutriSync
+<h1 align="center">
+     🍃 <a href="#" alt="site do ecoleta"> NutriSync </a>
+</h1>
 
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
-![Bootstrap](https://img.shields.io/badge/-boostrap-0D1117?style=for-the-badge&logo=bootstrap&labelColor=0D1117)
-![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
+<p align="center">
+    <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python">
+    <img src="https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white" alt="Django">
+    <img src="https://img.shields.io/badge/-boostrap-0D1117?style=for-the-badge&logo=bootstrap&labelColor=0D1117" alt="Bootstrap">
+    <img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License: MIT">
+</p>
 
+<h4 align="center">
+	🚧   Em Desenvolvimento 🚀 🚧
+</h4>
+
+## Sumário
+
+- [Sumário](#sumário)
+- [Layout](#layout)
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Requisitos](#requisitos)
+- [Instalação](#instalação)
+- [Uso](#uso)
+- [Licença](#licença)
+- [Contato](#contato)
+
+
+## Layout
+![image](https://github.com/user-attachments/assets/6fa52ef7-45ca-4b15-a777-5d1b2a2bf76b)
+![image](https://github.com/user-attachments/assets/5ffd97fd-becd-4669-a218-81a414f9700c)
+![image](https://github.com/user-attachments/assets/7a5c09c2-e468-43a8-97a4-9a5dfdf1aba3)
+![image](https://github.com/user-attachments/assets/8086c913-310d-4ddf-bfd0-6852c432818b)
+
+## Sobre o Projeto
 NutriSync é uma plataforma inovadora projetada exclusivamente para nutricionistas, oferecendo uma solução completa para o gerenciamento de pacientes. Com NutriSync, você pode facilmente cadastrar novos pacientes, acompanhar o progresso nutricional e adaptar planos alimentares personalizados.
 
 ## Funcionalidades
 
-- **Cadastro de Pacientes:** Adicione novos pacientes com informações detalhadas e históricas de saúde.
+- **Cadastro de Pacientes:** Adicione novos pacientes com informações detalhadas.
 - **Acompanhamento Nutricional:** Monitore o progresso nutricional dos pacientes ao longo do tempo.
 - **Planos Alimentares Personalizados:** Crie e adapte planos alimentares de acordo com as necessidades individuais dos pacientes.
 
@@ -23,6 +52,8 @@ NutriSync é uma plataforma inovadora projetada exclusivamente para nutricionist
 
 ## Requisitos
 
+- Python 3.8+
+- Django 4.0+
 - Python 3.8+
 - Django 4.0+
 - Virtualenv (opcional, mas recomendado)
