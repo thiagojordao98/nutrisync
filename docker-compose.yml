@@ -1,51 +1,37 @@
 version: '3.8'
 
-# networks:
-#   mynetwork:
-#     driver: bridge
-
 services:
-  db:
+  database_server: # Mudamos o nome de 'db' para evitar conflitos de DNS
     image: postgres:15-alpine
-    container_name: postgres_db
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${USER_DB}
       POSTGRES_PASSWORD: ${PASSWORD_DB}
-    #ports:
-    #  - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    # networks:
-    #   - mynetwork
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $USER_DB -d $POSTGRES_DB"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      test: ["CMD-SHELL", "pg_isready -U ${USER_DB} -d ${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
 
   web:
     build: .
-    container_name: django_app
+    # O entrypoint garante que o Django ESPERE o DNS propagar
     entrypoint: >
-      sh -c "until getent hosts db; do echo 'Aguardando DNS do banco...'; sleep 2; done;
-             echo 'DNS resolvido. Iniciando Django...';
-             exec \"$$@\""
-    command: >
-      sh -c "python manage.py migrate &&
+      sh -c "until getent hosts database_server; do 
+               echo 'Aguardando rede do banco...'; 
+               sleep 2; 
+             done; 
+             python manage.py migrate && 
              python manage.py runserver 0.0.0.0:8000"
-    volumes:
-      - .:/app
-    ports:
-      - "8001:8000"
     environment:
       - DEBUG=1
-      - DATABASE_URL=${DATABASE_URL}
+      # IMPORTANTE: O host na URL agora deve ser 'database_server'
+      - DATABASE_URL=postgres://${USER_DB}:${PASSWORD_DB}@database_server:5432/${POSTGRES_DB}
     depends_on:
-      - db:
-          condition: service_healthy
-    # networks:
-    #   - mynetwork
+      database_server:
+        condition: service_healthy
 
 volumes:
   postgres_data:
