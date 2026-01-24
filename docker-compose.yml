@@ -6,7 +6,7 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:alpine
+    image: postgres:15-alpine
     container_name: postgres_db
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
@@ -27,10 +27,12 @@ services:
   web:
     build: .
     container_name: django_app
+    entrypoint: >
+      sh -c "until getent hosts db; do echo 'Aguardando DNS do banco...'; sleep 2; done;
+             echo 'DNS resolvido. Iniciando Django...';
+             exec \"$$@\""
     command: >
-      sh -c "echo 'Iniciando verificações...' &&
-             until getent hosts db; do echo 'Aguardando DNS do banco...'; sleep 2; done &&
-             python manage.py migrate &&
+      sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/app
