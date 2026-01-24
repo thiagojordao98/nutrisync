@@ -82,8 +82,16 @@ WSGI_APPLICATION = 'nutrisync.wsgi.application'
 
 
 DATABASES = {
-    'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'), # Deve ser 'database_server'
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+    }
 }
+
 
 
 # Password validation
