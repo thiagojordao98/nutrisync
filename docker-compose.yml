@@ -36,7 +36,6 @@ services:
     depends_on:
       - db
     container_name: django_app
-    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
