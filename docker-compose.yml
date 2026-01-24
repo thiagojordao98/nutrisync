@@ -22,35 +22,46 @@ services:
     build: .
     container_name: django_app
     restart: always
-    # Script de espera ROBUSTO + Inicialização
-    command: >
-      sh -c "
-        echo 'Iniciando verificacao de rede para database_server:5432...';
-        python -c 'import socket, time;
-      host=\"database_server\";
-      port=5432;
-      print(f\"Tentando resolver {host}...\");
-      while True:
-          try:
-              socket.gethostbyname(host);
-              print(f\"DNS OK: {host} resolvido.\");
-              break;
-          except socket.gaierror:
-              print(\"Aguardando DNS...\");
-              time.sleep(1);
-      print(f\"Tentando conectar TCP em {host}:{port}...\");
-      while True:
-          try:
-              with socket.create_connection((host, port), timeout=2): break;
-          except (OSError, ConnectionRefusedError):
-              print(\"Porta fechada ou host inacessivel. Retentando...\");
-              time.sleep(1);
-      print(\"Conexao TCP SUCESSO!\")';
-        echo 'Iniciando Django...';
-        python manage.py collectstatic --noinput;
-        python manage.py migrate;
+    # USAR ENTRYPOINT PARA FORÇAR A EXECUÇÃO DO SCRIPT
+    entrypoint:
+      - sh
+      - -c
+      - |
+        echo "--> INICIANDO SCRIPT DE DEPLOY..."
+        echo "--> Testando resolucao DNS para database_server..."
+        
+        # Loop em Python puro para testar DNS e Conexão TCP
+        python -c "
+        import socket, time, sys
+        host = 'database_server'
+        port = 5432
+        
+        # 1. Teste de DNS
+        while True:
+            try:
+                ip = socket.gethostbyname(host)
+                print(f'--> DNS OK: {host} resolve para {ip}')
+                break
+            except socket.gaierror:
+                print('--> Aguardando DNS resolver database_server...')
+                time.sleep(2)
+        
+        # 2. Teste de TCP
+        print(f'--> Testando conexao TCP em {host}:{port}...')
+        while True:
+            try:
+                with socket.create_connection((host, port), timeout=3):
+                    print('--> CONEXAO TCP SUCESSO!')
+                    break
+            except (OSError, ConnectionRefusedError) as e:
+                print(f'--> Porta fechada ou recusada ({e}). Tentando novamente...')
+                time.sleep(2)
+        "
+        
+        echo "--> Iniciando comandos Django..."
+        python manage.py collectstatic --noinput
+        python manage.py migrate
         python manage.py runserver 0.0.0.0:8000
-      "
     environment:
       - DATABASE_URL=postgres://${USER_DB}:${PASSWORD_DB}@database_server:5432/${POSTGRES_DB}
     depends_on:
