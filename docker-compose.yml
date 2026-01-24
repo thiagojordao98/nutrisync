@@ -1,8 +1,9 @@
 version: '3.8'
 
 services:
-  database_server: # Mudamos o nome de 'db' para evitar conflitos de DNS
+  database_server:
     image: postgres:15-alpine
+    restart: always
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${USER_DB}
@@ -11,35 +12,33 @@ services:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${USER_DB} -d ${POSTGRES_DB}"]
-      interval: 3s
-      timeout: 3s
-      retries: 10
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app_network
 
-    web:
+  web:
     build: .
     container_name: django_app
-    # Este script tenta resolver o IP do banco antes de qualquer comando Django
-    command: >
-      sh -c "echo 'Iniciando verificações de rede...' &&
-             until getent hosts database_server; do
-               echo 'O nome database_server ainda não é conhecido. Aguardando DNS...';
-               sleep 2;
-             done;
-             echo 'DNS resolvido! Verificando porta 5432...';
-             until timeout 1 sh -c 'cat < /dev/null > /dev/tcp/database_server/5432'; do
-               echo 'Banco encontrado, mas porta 5432 ainda fechada. Aguardando...';
-               sleep 2;
-             done;
-             echo 'Tudo pronto! Iniciando Django...';
-             python manage.py collectstatic --noinput &&
-             python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
+    restart: always
+    command: python manage.py runserver 0.0.0.0:8000
     environment:
-      - DATABASE_URL=postgres://${USER_DB}:${PASSWORD_DB}@database_server:5432/${POSTGRES_DB}
+      - POSTGRES_HOST=database_server
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${USER_DB}
+      - POSTGRES_PASSWORD=${PASSWORD_DB}
+      # Ajuste sua settings.py para usar essas vars!
     depends_on:
       database_server:
         condition: service_healthy
-
+    networks:
+      - app_network
 
 volumes:
   postgres_data:
+
+networks:
+  app_network:
+    driver: bridge
