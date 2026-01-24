@@ -15,23 +15,31 @@ services:
       timeout: 3s
       retries: 10
 
-  web:
+    web:
     build: .
-    # O entrypoint garante que o Django ESPERE o DNS propagar
-    entrypoint: >
-      sh -c "until getent hosts database_server; do 
-               echo 'Aguardando rede do banco...'; 
-               sleep 2; 
-             done; 
-             python manage.py migrate && 
+    container_name: django_app
+    # Este script tenta resolver o IP do banco antes de qualquer comando Django
+    command: >
+      sh -c "echo 'Iniciando verificações de rede...' &&
+             until getent hosts database_server; do
+               echo 'O nome database_server ainda não é conhecido. Aguardando DNS...';
+               sleep 2;
+             done;
+             echo 'DNS resolvido! Verificando porta 5432...';
+             until timeout 1 sh -c 'cat < /dev/null > /dev/tcp/database_server/5432'; do
+               echo 'Banco encontrado, mas porta 5432 ainda fechada. Aguardando...';
+               sleep 2;
+             done;
+             echo 'Tudo pronto! Iniciando Django...';
+             python manage.py collectstatic --noinput &&
+             python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
     environment:
-      - DEBUG=1
-      # IMPORTANTE: O host na URL agora deve ser 'database_server'
       - DATABASE_URL=postgres://${USER_DB}:${PASSWORD_DB}@database_server:5432/${POSTGRES_DB}
     depends_on:
       database_server:
         condition: service_healthy
+
 
 volumes:
   postgres_data:
