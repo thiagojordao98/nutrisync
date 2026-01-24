@@ -1,8 +1,8 @@
 version: '3.8'
 
-networks:
-  mynetwork:
-    driver: bridge
+# networks:
+#   mynetwork:
+#     driver: bridge
 
 services:
   db:
@@ -46,8 +46,8 @@ services:
       - DATABASE_URL=${DATABASE_URL}
     depends_on:
       - db
-    networks:
-      - mynetwork
+    # networks:
+    #   - mynetwork
 
 volumes:
   postgres_data:
