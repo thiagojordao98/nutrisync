@@ -14,7 +14,7 @@ services:
       test: ["CMD-SHELL", "pg_isready -U ${USER_DB} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
     networks:
       - app_network
 
@@ -22,14 +22,37 @@ services:
     build: .
     container_name: django_app
     restart: always
-    command: python manage.py runserver 0.0.0.0:8000
+    # Script de espera ROBUSTO + Inicialização
+    command: >
+      sh -c "
+        echo 'Iniciando verificacao de rede para database_server:5432...';
+        python -c 'import socket, time;
+      host=\"database_server\";
+      port=5432;
+      print(f\"Tentando resolver {host}...\");
+      while True:
+          try:
+              socket.gethostbyname(host);
+              print(f\"DNS OK: {host} resolvido.\");
+              break;
+          except socket.gaierror:
+              print(\"Aguardando DNS...\");
+              time.sleep(1);
+      print(f\"Tentando conectar TCP em {host}:{port}...\");
+      while True:
+          try:
+              with socket.create_connection((host, port), timeout=2): break;
+          except (OSError, ConnectionRefusedError):
+              print(\"Porta fechada ou host inacessivel. Retentando...\");
+              time.sleep(1);
+      print(\"Conexao TCP SUCESSO!\")';
+        echo 'Iniciando Django...';
+        python manage.py collectstatic --noinput;
+        python manage.py migrate;
+        python manage.py runserver 0.0.0.0:8000
+      "
     environment:
-      - POSTGRES_HOST=database_server
-      - POSTGRES_PORT=5432
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${USER_DB}
-      - POSTGRES_PASSWORD=${PASSWORD_DB}
-      # Ajuste sua settings.py para usar essas vars!
+      - DATABASE_URL=postgres://${USER_DB}:${PASSWORD_DB}@database_server:5432/${POSTGRES_DB}
     depends_on:
       database_server:
         condition: service_healthy
